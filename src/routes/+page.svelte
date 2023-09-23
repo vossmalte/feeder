@@ -1,2 +1,15 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+	import { firestore } from '$lib/firebase';
+	import { collectionStore } from 'sveltefire';
+	const babies = collectionStore(firestore, 'babies');
+	$: console.log($babies);
+</script>
+
+<a href="/feedings">Letzte Eintraege</a>
+<ul>
+	{#each $babies as baby}
+		<li>
+			<a href={'/babies/' + baby.id}>{baby.name}</a>
+		</li>
+	{/each}
+</ul>
