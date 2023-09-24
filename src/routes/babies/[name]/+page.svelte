@@ -1,16 +1,30 @@
-<script>
+<script lang="ts">
+	import FeedingButtons from '$lib/components/FeedingButtons.svelte';
+	import { feedingEmojies } from '$lib/emojify';
 	import { firestore } from '$lib/firebase';
-	import { collectionStore, Doc, docStore } from 'sveltefire';
+	import { collection, query, orderBy } from 'firebase/firestore';
+	import { Collection, Doc } from 'sveltefire';
 	export let data;
 
-	$: console.log(data);
-
-	const feedings = collectionStore(firestore, `babies/${data.name}/feedings`);
+	const collectionPath = `babies/${data.name}/feedings`;
+	const collectionRef = collection(firestore, collectionPath);
+	const q = query(collectionRef, orderBy('datetime', 'desc'));
+	const feedingsCollection = collection(firestore, collectionPath);
 </script>
 
 <Doc ref={'babies/' + data.name} let:data>
 	<h1>
 		{data?.name}
 	</h1>
-	<a href="./addFeeding">Neue Runde</a>
 </Doc>
+
+<FeedingButtons {feedingsCollection} />
+
+<Collection ref={q} let:data>
+	<h2>Letzte Aktionen</h2>
+	<ul>
+		{#each data as feeding}
+			<li>{feedingEmojies[feeding.type]} {feeding.datetime}</li>
+		{/each}
+	</ul></Collection
+>
