@@ -8,7 +8,7 @@ const firebaseConfig = {
 
 	authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
 
-	projectId: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+	projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
 
 	storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
 
@@ -16,7 +16,6 @@ const firebaseConfig = {
 
 	appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
-console.log(firebaseConfig);
 const app = initializeApp(firebaseConfig);
 export const firestore = getFirestore(app);
 export const storage = getStorage(app);
