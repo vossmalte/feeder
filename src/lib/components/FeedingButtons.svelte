@@ -63,8 +63,11 @@
 
 <style>
 	ul {
-		display: flex;
-		flex-direction: column;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
 		gap: 4px;
+	}
+	li {
+		list-style-type: none;
 	}
 </style>
