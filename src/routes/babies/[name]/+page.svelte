@@ -1,14 +1,12 @@
 <script lang="ts">
 	import FeedingButtons from '$lib/components/FeedingButtons.svelte';
-	import { feedingEmojies } from '$lib/emojify';
+	import FeedingHistory from '$lib/components/FeedingHistory.svelte';
 	import { firestore } from '$lib/firebase';
-	import { collection, query, orderBy } from 'firebase/firestore';
-	import { Collection, Doc } from 'sveltefire';
+	import { collection } from 'firebase/firestore';
+	import { Doc } from 'sveltefire';
 	export let data;
 
 	const collectionPath = `babies/${data.name}/feedings`;
-	const collectionRef = collection(firestore, collectionPath);
-	const q = query(collectionRef, orderBy('datetime', 'desc'));
 	const feedingsCollection = collection(firestore, collectionPath);
 </script>
 
@@ -20,11 +18,4 @@
 
 <FeedingButtons {feedingsCollection} />
 
-<Collection ref={q} let:data>
-	<h2>Letzte Aktionen</h2>
-	<ul>
-		{#each data as feeding}
-			<li>{feedingEmojies[feeding.type]} {feeding.datetime}</li>
-		{/each}
-	</ul></Collection
->
+<FeedingHistory {feedingsCollection} />
