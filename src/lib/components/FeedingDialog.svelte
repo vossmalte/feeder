@@ -11,21 +11,16 @@
 	let dialog: HTMLDialogElement;
 	$: dialog?.showModal();
 
-	function close() {
-		feedingType = undefined;
-		dialog.close();
-	}
-
 	function submit() {
 		if (feedingType && quantity) dispatch('submit', { type: feedingType, quantity });
-		close();
+		dialog?.close();
 	}
 	export let feedingType: FeedingType | undefined;
 </script>
 
 {#if feedingType !== undefined}
-	<dialog bind:this={dialog}>
-		<button on:click={close} style="right: 0">x</button>
+	<dialog bind:this={dialog} on:close={() => (feedingType = undefined)}>
+		<button on:click={() => dialog.close()} style="right: 0">x</button>
 		<h1>{feedingEmojies[feedingType]} {feedingCaptions[feedingType]}</h1>
 		<label>
 			<input type="number" bind:value={quantity} />{feedingUnits[feedingType]}
