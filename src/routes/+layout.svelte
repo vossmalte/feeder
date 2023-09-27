@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { FirebaseApp } from 'sveltefire';
 	import { auth, firestore, storage } from '../lib/firebase';
+	import '$lib/css-reset.css';
 
 	import { SignedIn, SignedOut } from 'sveltefire';
 </script>
@@ -19,5 +20,9 @@
 <style global>
 	div {
 		font-family: sans-serif;
+	}
+	main {
+		display: flex;
+		flex-direction: column;
 	}
 </style>
