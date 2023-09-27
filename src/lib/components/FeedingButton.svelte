@@ -57,4 +57,8 @@
 		font-size: 200%;
 		border: unset;
 	}
+	label:active:has(:not(:disabled)) {
+		translate: 2px 2px;
+		opacity: 0.8;
+	}
 </style>

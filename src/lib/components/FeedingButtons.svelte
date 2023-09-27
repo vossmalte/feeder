@@ -59,13 +59,16 @@
 		</li>
 	{/each}
 </ul>
-<FeedingDialog bind:feedingType on:submit={(e) => addFeeding(e.detail)} />
+{#if feedingType !== undefined}
+	<FeedingDialog bind:feedingType on:submit={(e) => addFeeding(e.detail)} />
+{/if}
 
 <style>
 	ul {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		gap: 4px;
+		padding: 0;
 	}
 	li {
 		list-style-type: none;
