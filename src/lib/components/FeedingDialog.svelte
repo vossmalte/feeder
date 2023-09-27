@@ -6,16 +6,18 @@
 
 	const dispatch = createEventDispatcher<{ submit: Feeding }>();
 
-	let quantity = 60;
+	let quantity: number;
 
 	let dialog: HTMLDialogElement;
 	$: dialog?.showModal();
 
 	function submit() {
-		if (feedingType && quantity) dispatch('submit', { type: feedingType, quantity });
-		dialog?.close();
+		if (feedingType && quantity) {
+			dispatch('submit', { type: feedingType, quantity });
+			dialog?.close();
+		}
 	}
-	export let feedingType: FeedingType | undefined;
+	export let feedingType: FeedingType | undefined = undefined;
 </script>
 
 {#if feedingType !== undefined}
@@ -23,7 +25,12 @@
 		<button on:click={() => dialog.close()} style="right: 0">x</button>
 		<h1>{feedingEmojies[feedingType]} {feedingCaptions[feedingType]}</h1>
 		<label>
-			<input type="number" bind:value={quantity} />{feedingUnits[feedingType]}
+			<input
+				autofocus
+				type="number"
+				bind:value={quantity}
+				on:keypress={(e) => e.key === 'Enter' && submit()}
+			/>{feedingUnits[feedingType]}
 		</label>
 		<button on:click={submit} disabled={!quantity}>💾</button>
 	</dialog>
