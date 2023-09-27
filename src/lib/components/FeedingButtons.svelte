@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { firestore } from '$lib/firebase';
 	import type { Feeding, FeedingType, FeedingWithTimestamp } from '$lib/types';
+	import { feedingTypes, assertUnreachable } from '$lib/types';
 	import { addDoc, limit, orderBy, query, type CollectionReference } from 'firebase/firestore';
 	import { collectionStore } from 'sveltefire';
 	import FeedingButton from './FeedingButton.svelte';
+	import FeedingDialog from './FeedingDialog.svelte';
 
 	export let feedingsCollection: CollectionReference;
 
@@ -12,9 +14,11 @@
 		.toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' })
 		.replace(' ', 'T');
 
+	let feedingType: FeedingType;
+
 	const latestAction = collectionStore(
 		firestore,
-		query(feedingsCollection, orderBy('datetime'), limit(1))
+		query(feedingsCollection, orderBy('datetime', 'desc'), limit(1))
 	);
 
 	function addFeeding(feeding: Feeding) {
@@ -23,16 +27,21 @@
 		addDoc(feedingsCollection, f);
 	}
 
-	let addPdf = (quantity: number) => addFeeding({ type: 'pdf', quantity });
-
 	function clickHandler(e: CustomEvent<FeedingType>) {
 		switch (e.detail) {
 			case 'poo':
-				addFeeding({ type: 'poo' });
+			case 'iron':
+			case 'vitamin':
+			case 'hair':
+				addFeeding({ type: e.detail });
 				break;
 			case 'pdf':
-				// TODO: open dialog to enter number
-				console.log('open dialog for ' + e.detail);
+			case 'breastMilk':
+			case 'breastfeed': // opens dialog
+				feedingType = e.detail;
+				break;
+			default:
+				assertUnreachable(e.detail);
 		}
 	}
 </script>
@@ -44,10 +53,18 @@
 	}}>↻</button
 >
 <ul>
-	<li>
-		<FeedingButton feedingType="poo" {feedingsCollection} on:click={clickHandler} />
-	</li>
-	<li>
-		<FeedingButton feedingType="pdf" {feedingsCollection} on:click={clickHandler} />
-	</li>
+	{#each feedingTypes as feedingType}
+		<li>
+			<FeedingButton {datetime} {feedingType} {feedingsCollection} on:click={clickHandler} />
+		</li>
+	{/each}
 </ul>
+<FeedingDialog bind:feedingType on:submit={(e) => addFeeding(e.detail)} />
+
+<style>
+	ul {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+</style>

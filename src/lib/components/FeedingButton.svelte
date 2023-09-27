@@ -1,6 +1,7 @@
 <script lang="ts">
 	export let feedingType: FeedingType;
 	export let feedingsCollection: CollectionReference;
+	export let datetime: string;
 
 	import { feedingEmojies } from '$lib/emojify';
 	import { firestore } from '$lib/firebase';
@@ -17,10 +18,20 @@
 
 	const latestAction = collectionStore(
 		firestore,
-		query(feedingsCollection, where('type', '==', feedingType), orderBy('datetime','desc'), limit(1))
+		query(
+			feedingsCollection,
+			where('type', '==', feedingType),
+			orderBy('datetime', 'desc'),
+			limit(1)
+		)
 	);
+	let hoursSinceLast = 0;
+	$: hoursSinceLast =
+		Math.round((new Date().getTime() - new Date($latestAction[0]?.datetime).getTime()) / 360000.0) /
+		10.0;
+	console.log(hoursSinceLast);
 </script>
 
-<button on:click={click}>{feedingEmojies[feedingType]}</button>⏰ vor {Math.round(
-	(new Date().getTime() - new Date($latestAction[0]?.datetime).getTime()) / 360000
-) / 10.0 || '♾️'}h
+<button on:click={click} disabled={datetime === $latestAction[0]?.datetime}
+	>{feedingEmojies[feedingType]}</button
+>⏰ vor {hoursSinceLast > -1 ? hoursSinceLast : '♾️'}h
