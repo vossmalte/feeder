@@ -10,12 +10,21 @@
 	const feedingsCollection = collection(firestore, collectionPath);
 </script>
 
-<Doc ref={'babies/' + data.name} let:data>
-	<h1>
-		{data?.name}
-	</h1>
-</Doc>
+<h1>
+	<Doc ref={'babies/' + data.name} let:data>
+		Hallo {data?.name}
+	</Doc>
+</h1>
 
 <FeedingButtons {feedingsCollection} />
 
 <FeedingHistory {feedingsCollection} />
+
+<style>
+	h1 {
+		position: sticky;
+		top: 0;
+		opacity: 1;
+		background-color: white;
+	}
+</style>
