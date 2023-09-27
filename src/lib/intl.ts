@@ -9,3 +9,12 @@ export const feedingCaptions: Record<FeedingType, string> = {
 	iron: 'Eisen',
 	vitamin: 'Vitamin D'
 };
+export const feedingUnits: Record<FeedingType, string> = {
+	poo: '',
+	pdf: 'ml',
+	breastfeed: 'min',
+	breastMilk: 'ml',
+	hair: '',
+	iron: '',
+	vitamin: ''
+}

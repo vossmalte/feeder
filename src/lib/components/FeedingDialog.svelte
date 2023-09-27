@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { feedingEmojies } from '$lib/emojify';
+	import { feedingCaptions, feedingUnits } from '$lib/intl';
 	import type { Feeding, FeedingType } from '$lib/types';
 	import { createEventDispatcher } from 'svelte';
 
@@ -7,18 +8,50 @@
 
 	let quantity = 60;
 
+	let dialog: HTMLDialogElement;
+	$: dialog?.showModal();
+
+	function close() {
+		feedingType = undefined;
+		dialog.close();
+	}
+
 	function submit() {
 		if (feedingType && quantity) dispatch('submit', { type: feedingType, quantity });
-		feedingType = undefined;
+		close();
 	}
 	export let feedingType: FeedingType | undefined;
 </script>
 
 {#if feedingType !== undefined}
-	<dialog open>
-		<button on:click={() => (feedingType = undefined)} style="margin-right: 0">x</button>
-		<h1>{feedingEmojies[feedingType]}</h1>
-		<input type="number" bind:value={quantity} />
+	<dialog bind:this={dialog}>
+		<button on:click={close} style="right: 0">x</button>
+		<h1>{feedingEmojies[feedingType]} {feedingCaptions[feedingType]}</h1>
+		<label>
+			<input type="number" bind:value={quantity} />{feedingUnits[feedingType]}
+		</label>
 		<button on:click={submit} disabled={!quantity}>💾</button>
 	</dialog>
 {/if}
+
+<style>
+	dialog {
+		position: fixed;
+		align-self: center;
+		top: 0vh;
+		display: flex;
+		flex-direction: column;
+		text-align: center;
+		flex-wrap: wrap;
+	}
+	dialog::backdrop {
+		background-color: rgba(80, 80, 80, 0.8);
+	}
+	button {
+		width: min-content;
+		align-self: flex-end;
+	}
+	input {
+		width: 6ch;
+	}
+</style>
