@@ -9,6 +9,7 @@
 		type CollectionReference,
 		type DocumentData
 	} from 'firebase/firestore';
+	import { flip } from 'svelte/animate';
 	import { derived, type Readable } from 'svelte/store';
 	import { collectionStore } from 'sveltefire';
 
@@ -30,8 +31,28 @@
 		}
 	);
 
+	import { crossfade } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
+	export const [send, receive] = crossfade({
+		duration: (d) => Math.sqrt(d * 200),
+
+		fallback(node, params) {
+			const style = getComputedStyle(node);
+			const transform = style.transform === 'none' ? '' : style.transform;
+
+			return {
+				duration: 600,
+				easing: quintOut,
+				css: (t) => `
+				transform: ${transform} scale(${t});
+				opacity: ${t}
+			`
+			};
+		}
+	});
+
 	function deleteActivity(activity: DocumentData) {
-		deleteDoc(activity.ref)
+		deleteDoc(activity.ref);
 	}
 </script>
 
@@ -48,16 +69,17 @@
 					minute: 'numeric'
 				})}
 			</h3>
-			{#each round as activity}
-				<ul>
-					<li>
+			<ul>
+				{#each round as activity (activity.id)}
+					<li in:receive={{ key: activity.id }} out:send={{ key: activity.id }} animate:flip>
 						{feedingEmojies[activity.type]}
 						{activity?.quantity ?? ''}{feedingUnits[activity.type]}
 						{feedingCaptions[activity.type]}
+						<!--TODO: the delete UX should be improved by a lot. e.g.: click on a datetime and have it selected above to quickly edit those entries via FeedingButtons -->
 						<button on:click={() => deleteActivity(activity)}>x</button>
 					</li>
-				</ul>
-			{/each}
+				{/each}
+			</ul>
 		</li>
 	{/each}
 </ul>
