@@ -7,5 +7,6 @@ export const feedingEmojies: Record<FeedingType, string> = {
 	breastMilk: '🥛',
 	hair: '🪮',
 	iron: '🔗',
-	vitamin: '💊'
+	vitamin: '💊',
+	comment: '💬'
 };

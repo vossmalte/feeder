@@ -73,7 +73,7 @@
 				{#each round as activity (activity.id)}
 					<li in:receive={{ key: activity.id }} out:send={{ key: activity.id }} animate:flip>
 						{feedingEmojies[activity.type]}
-						{activity?.quantity ?? ''}{feedingUnits[activity.type]}
+						{activity?.quantity ?? activity?.comment ?? ''}{feedingUnits[activity.type]}
 						{feedingCaptions[activity.type]}
 						<!--TODO: the delete UX should be improved by a lot. e.g.: click on a datetime and have it selected above to quickly edit those entries via FeedingButtons -->
 						<button on:click={() => deleteActivity(activity)}>x</button>

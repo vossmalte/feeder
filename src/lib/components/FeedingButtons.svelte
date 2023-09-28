@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { firestore } from '$lib/firebase';
-	import type { Feeding, FeedingType, FeedingWithTimestamp } from '$lib/types';
+	import type { Feeding, FeedingType, FeedingWithTimestamp, QuantifiedFeedingType } from '$lib/types';
 	import { feedingTypes, assertUnreachable } from '$lib/types';
 	import { addDoc, limit, orderBy, query, type CollectionReference } from 'firebase/firestore';
 	import { collectionStore } from 'sveltefire';
@@ -14,7 +14,7 @@
 		.toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' })
 		.replace(' ', 'T');
 
-	let feedingType: FeedingType;
+	let feedingTypeForModal: QuantifiedFeedingType | 'comment' | undefined = undefined;
 
 	const latestAction = collectionStore(
 		firestore,
@@ -38,8 +38,10 @@
 				break;
 			case 'pdf':
 			case 'breastMilk':
-			case 'breastfeed': // opens dialog
-				feedingType = e.detail;
+			case 'breastfeed':
+			case 'comment':
+				// opens dialog
+				feedingTypeForModal = e.detail;
 				break;
 			default:
 				assertUnreachable(e.detail);
@@ -60,8 +62,8 @@
 		</li>
 	{/each}
 </ul>
-{#if feedingType !== undefined}
-	<FeedingDialog bind:feedingType on:submit={(e) => addFeeding(e.detail)} />
+{#if feedingTypeForModal !== undefined}
+	<FeedingDialog bind:feedingType={feedingTypeForModal} on:submit={(e) => addFeeding(e.detail)} />
 {/if}
 
 <style>
