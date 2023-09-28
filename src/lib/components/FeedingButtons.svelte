@@ -23,6 +23,7 @@
 
 	function addFeeding(feeding: Feeding) {
 		// TODO:  maybe use a converter to have this typed niceley
+		// TODO: we probably also want to save the author...
 		const f: FeedingWithTimestamp = { ...feeding, datetime };
 		addDoc(feedingsCollection, f);
 	}
