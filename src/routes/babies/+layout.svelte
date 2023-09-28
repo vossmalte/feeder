@@ -7,7 +7,7 @@
 		<ul>
 			{#each data as baby}
 				<li>
-					<a href={'../' + baby.id}>
+					<a href={'../' + baby.id} data-sveltekit-reload>
 						{baby.name}
 					</a>
 				</li>
