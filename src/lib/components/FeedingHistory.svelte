@@ -2,7 +2,13 @@
 	import { feedingEmojies } from '$lib/emojify';
 	import { firestore } from '$lib/firebase';
 	import { feedingCaptions, feedingUnits } from '$lib/intl';
-	import { orderBy, query, type CollectionReference, type DocumentData } from 'firebase/firestore';
+	import {
+		deleteDoc,
+		orderBy,
+		query,
+		type CollectionReference,
+		type DocumentData
+	} from 'firebase/firestore';
 	import { derived, type Readable } from 'svelte/store';
 	import { collectionStore } from 'sveltefire';
 
@@ -23,6 +29,10 @@
 			set([...map.values()]);
 		}
 	);
+
+	function deleteActivity(activity: DocumentData) {
+		deleteDoc(activity.ref)
+	}
 </script>
 
 <h2>Letzte Aktionen</h2>
@@ -44,7 +54,7 @@
 						{feedingEmojies[activity.type]}
 						{activity?.quantity ?? ''}{feedingUnits[activity.type]}
 						{feedingCaptions[activity.type]}
-						<!-- TODO: delete this entry with a button -->
+						<button on:click={() => deleteActivity(activity)}>x</button>
 					</li>
 				</ul>
 			{/each}
