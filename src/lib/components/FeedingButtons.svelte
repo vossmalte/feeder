@@ -1,6 +1,11 @@
 <script lang="ts">
 	import { firestore } from '$lib/firebase';
-	import type { Feeding, FeedingType, FeedingWithTimestamp, QuantifiedFeedingType } from '$lib/types';
+	import type {
+		Feeding,
+		FeedingType,
+		FeedingWithTimestamp,
+		QuantifiedFeedingType
+	} from '$lib/types';
 	import { feedingTypes, assertUnreachable } from '$lib/types';
 	import { addDoc, limit, orderBy, query, type CollectionReference } from 'firebase/firestore';
 	import { collectionStore } from 'sveltefire';
@@ -40,6 +45,7 @@
 			case 'breastMilk':
 			case 'breastfeed':
 			case 'comment':
+			case 'temperature':
 				// opens dialog
 				feedingTypeForModal = e.detail;
 				break;

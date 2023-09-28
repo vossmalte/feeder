@@ -8,7 +8,8 @@ export const feedingCaptions: Record<FeedingType, string> = {
 	hair: 'Haare',
 	iron: 'Eisen',
 	vitamin: 'Vitamin D',
-	comment: 'Kommentar'
+	comment: 'Kommentar',
+	temperature: 'Temperatur'
 };
 export const feedingUnits: Record<FeedingType, string> = {
 	poo: '',
@@ -18,5 +19,6 @@ export const feedingUnits: Record<FeedingType, string> = {
 	hair: '',
 	iron: '',
 	vitamin: '',
-	comment: ''
+	comment: '',
+	temperature: '°C'
 };

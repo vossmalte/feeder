@@ -1,5 +1,5 @@
 // TODO: add temperature
-export const quantifiedFeedingTypes = ['pdf', 'breastMilk', 'breastfeed'] as const;
+export const quantifiedFeedingTypes = ['pdf', 'breastMilk', 'breastfeed', 'temperature'] as const;
 export type QuantifiedFeedingType = (typeof quantifiedFeedingTypes)[number];
 
 export const booleanFeedingTypes = ['poo', 'iron', 'vitamin', 'hair'] as const;
@@ -9,8 +9,8 @@ export const feedingTypes = [...quantifiedFeedingTypes, ...booleanFeedingTypes, 
 export type FeedingType = (typeof feedingTypes)[number];
 type FeedingBase<T extends FeedingType> = { type: T };
 
-type BasicFeeding = FeedingBase<'poo' | 'iron' | 'vitamin' | 'hair'>;
-type QuantifiedFeeding = FeedingBase<'pdf' | 'breastfeed' | 'breastMilk'> & { quantity: number };
+type BasicFeeding = FeedingBase<BooleanFeedingType>;
+type QuantifiedFeeding = FeedingBase<QuantifiedFeedingType> & { quantity: number };
 type Comment = FeedingBase<'comment'> & { comment: string };
 
 type UglyFeeding = BasicFeeding | QuantifiedFeeding | Comment;

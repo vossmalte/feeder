@@ -8,5 +8,6 @@ export const feedingEmojies: Record<FeedingType, string> = {
 	hair: '🪮',
 	iron: '🔗',
 	vitamin: '💊',
-	comment: '💬'
+	comment: '💬',
+	temperature: '🌡'
 };
