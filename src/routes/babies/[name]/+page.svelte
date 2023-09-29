@@ -11,8 +11,9 @@
 </script>
 
 <h1>
+	Hallo
 	<Doc ref={'babies/' + data.name} let:data>
-		Hallo {data?.name}
+		{data?.name}
 	</Doc>
 </h1>
 
