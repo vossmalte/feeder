@@ -14,6 +14,7 @@
 	import { collectionStore } from 'sveltefire';
 
 	export let feedingsCollection: CollectionReference;
+	export let numberOfRounds = Number.POSITIVE_INFINITY;
 
 	const q = query(feedingsCollection, orderBy('datetime', 'desc'));
 	const feedings = collectionStore(firestore, q);
@@ -56,9 +57,8 @@
 	}
 </script>
 
-<h2>Letzte Aktionen</h2>
 <ul class="rounds">
-	{#each $groupedFeedings as round}
+	{#each $groupedFeedings.filter((_, index) => index < numberOfRounds) as round}
 		<li>
 			<h3>
 				<a href="?datetime={round[0].datetime}">
@@ -78,7 +78,7 @@
 						{activity?.quantity ?? activity?.comment ?? ''}{feedingUnits[activity.type]}
 						{feedingCaptions[activity.type]}
 						<!--TODO: the delete UX should be improved by a lot. e.g.: click on a datetime and have it selected above to quickly edit those entries via FeedingButtons -->
-						<button on:click={() => deleteActivity(activity)}>x</button>
+						<button on:click={() => deleteActivity(activity)}>🗑</button>
 					</li>
 				{/each}
 			</ul>
@@ -100,5 +100,13 @@
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
+	}
+	h3 {
+		margin: 0;
+	}
+	button {
+		border: none;
+		background-color: transparent;
+		cursor: pointer;
 	}
 </style>

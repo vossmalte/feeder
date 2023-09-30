@@ -19,6 +19,7 @@
 
 <FeedingButtons {feedingsCollection} />
 
+<h2>Letzte Aktionen</h2>
 <FeedingHistory {feedingsCollection} />
 
 <style>
