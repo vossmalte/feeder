@@ -61,13 +61,15 @@
 	{#each $groupedFeedings as round}
 		<li>
 			<h3>
-				{new Date(round[0].datetime).toLocaleString('de', {
-					weekday: 'short',
-					day: 'numeric',
-					month: 'numeric',
-					hour: 'numeric',
-					minute: 'numeric'
-				})}
+				<a href="?datetime={round[0].datetime}">
+					{new Date(round[0].datetime).toLocaleString('de', {
+						weekday: 'short',
+						day: 'numeric',
+						month: 'numeric',
+						hour: 'numeric',
+						minute: 'numeric'
+					})}</a
+				>
 			</h3>
 			<ul>
 				{#each round as activity (activity.id)}
