@@ -3,14 +3,15 @@
 	import { auth, firestore, storage } from '../lib/firebase';
 	import '../lib/css-reset.css';
 
-	import { SignedIn, SignedOut } from 'sveltefire';
+	// import { SignedIn, SignedOut } from 'sveltefire';
 </script>
 
 <FirebaseApp {auth} {firestore} {storage}>
 	<nav>
-		<a href="/login">Benutzer</a>
-		<SignedIn>y</SignedIn>
-		<SignedOut>n</SignedOut>
+		<a href="/">🏠 Übersicht</a>
+		<!-- <a href="/login">Benutzer</a> -->
+		<!-- <SignedIn>y</SignedIn> -->
+		<!-- <SignedOut>n</SignedOut> -->
 	</nav>
 	<main>
 		<slot />
