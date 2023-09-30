@@ -16,7 +16,7 @@
 		</ul>
 	</nav>
 </Collection>
-{#key $page.url.pathname}
+{#key $page.url}
 	<slot />
 {/key}
 
