@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { firestore } from '$lib/firebase';
+	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import type {
 		Feeding,
 		FeedingType,
@@ -7,24 +9,32 @@
 		QuantifiedFeedingType
 	} from '$lib/types';
 	import { feedingTypes, assertUnreachable } from '$lib/types';
-	import { addDoc, limit, orderBy, query, type CollectionReference } from 'firebase/firestore';
-	import { collectionStore } from 'sveltefire';
+	import {
+		addDoc,
+		getDocs,
+		limit,
+		orderBy,
+		query,
+		type CollectionReference
+	} from 'firebase/firestore';
+	import { onMount } from 'svelte';
 	import FeedingButton from './FeedingButton.svelte';
 	import FeedingDialog from './FeedingDialog.svelte';
 
 	export let feedingsCollection: CollectionReference;
 
-	// this format matches datetime-local picker...
-	let datetime = new Date()
-		.toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' })
-		.replace(' ', 'T');
+	let datetime = $page.url.searchParams.get('datetime') ?? '';
+	onMount(() => {
+		getDocs(query(feedingsCollection, orderBy('datetime', 'desc'), limit(1))).then(
+			// set to latest round if not provided yet
+			(feedings) => (datetime ||= feedings.docs[0].get('datetime'))
+		);
+	});
+
+	// only on client: sync datetime to url
+	$: if (browser) goto('?datetime=' + datetime);
 
 	let feedingTypeForModal: QuantifiedFeedingType | 'comment' | undefined = undefined;
-
-	const latestAction = collectionStore(
-		firestore,
-		query(feedingsCollection, orderBy('datetime', 'desc'), limit(1))
-	);
 
 	function addFeeding(feeding: Feeding) {
 		// TODO:  maybe use a converter to have this typed niceley
@@ -59,8 +69,10 @@
 <input type="datetime-local" bind:value={datetime} lang="sv-SE" />
 <button
 	on:click={() => {
-		datetime = $latestAction[0]?.datetime ?? datetime;
-	}}>↻</button
+		datetime = new Date()
+			.toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' })
+			.replace(' ', 'T');
+	}}>🆕 Neue Runde</button
 >
 <ul>
 	{#each feedingTypes as feedingType}
