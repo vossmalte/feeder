@@ -4,7 +4,7 @@
 	export let datetime: string;
 
 	import { feedingEmojies } from '$lib/emojify';
-	import { feedingCaptions } from '$lib/intl';
+	import { feedingCaptions, feedingUnits } from '$lib/intl';
 	import { firestore } from '$lib/firebase';
 	import type { FeedingType } from '$lib/types';
 	import { CollectionReference, limit, orderBy, query, where } from 'firebase/firestore';
@@ -33,10 +33,18 @@
 </script>
 
 <label>
-	{feedingCaptions[feedingType]}
+	<h3>{feedingCaptions[feedingType]}</h3>
 	<button on:click={click} disabled={datetime === $latestAction[0]?.datetime}
 		>{feedingEmojies[feedingType]}</button
-	>⏰ vor {hoursSinceLast > -1 ? hoursSinceLast : '♾️'}h
+	>
+	<span>
+		{#if datetime !== $latestAction[0]?.datetime}
+			vor {hoursSinceLast > -1 ? hoursSinceLast : '♾️'}h:
+		{/if}
+		{$latestAction[0]?.quantity ?? $latestAction[0]?.comment ?? '✅'}{feedingUnits[
+			$latestAction[0]?.type ?? 'poo'
+		]}
+	</span>
 </label>
 
 <style>
@@ -44,7 +52,7 @@
 		display: flex;
 		flex-direction: column;
 		text-align: center;
-		background-color: limegreen;
+		background-color: mediumseagreen;
 		aspect-ratio: 1;
 		justify-content: center;
 	}
@@ -60,5 +68,8 @@
 	label:active:has(:not(:disabled)) {
 		translate: 2px 2px;
 		opacity: 0.8;
+	}
+	span {
+		color: lightgrey;
 	}
 </style>
