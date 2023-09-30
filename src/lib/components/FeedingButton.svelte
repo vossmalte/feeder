@@ -17,7 +17,7 @@
 		dispatch('click', feedingType);
 	}
 
-	const latestAction = collectionStore(
+	const mostRecentAction = collectionStore(
 		firestore,
 		query(
 			feedingsCollection,
@@ -26,23 +26,32 @@
 			limit(1)
 		)
 	);
-	let hoursSinceLast = 0;
+	const actionOfThisRoundStore = collectionStore(
+		firestore,
+		query(
+			feedingsCollection,
+			where('datetime', '==', datetime),
+			where('type', '==', feedingType),
+			limit(1)
+		)
+	);
+	$: actionOfThisRound = $actionOfThisRoundStore.length === 1 && $actionOfThisRoundStore[0];
+	$: renderedAction = actionOfThisRound || $mostRecentAction[0];
 	$: hoursSinceLast =
-		Math.round((new Date().getTime() - new Date($latestAction[0]?.datetime).getTime()) / 360000.0) /
-		10.0;
+		Math.round(
+			(new Date().getTime() - new Date($mostRecentAction[0]?.datetime).getTime()) / 360000.0
+		) / 10.0;
 </script>
 
 <label>
 	<h3>{feedingCaptions[feedingType]}</h3>
-	<button on:click={click} disabled={datetime === $latestAction[0]?.datetime}
-		>{feedingEmojies[feedingType]}</button
-	>
+	<button on:click={click} disabled={!!actionOfThisRound}>{feedingEmojies[feedingType]}</button>
 	<span>
-		{#if datetime !== $latestAction[0]?.datetime}
+		{#if !actionOfThisRound}
 			vor {hoursSinceLast > -1 ? hoursSinceLast : '♾️'}h:
 		{/if}
-		{$latestAction[0]?.quantity ?? $latestAction[0]?.comment ?? '✅'}{feedingUnits[
-			$latestAction[0]?.type ?? 'poo'
+		{renderedAction?.quantity ?? renderedAction?.comment ?? '✅'}{feedingUnits[
+			renderedAction?.type ?? 'poo'
 		]}
 	</span>
 </label>
