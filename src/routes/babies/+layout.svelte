@@ -1,4 +1,5 @@
 <script>
+	import { page } from '$app/stores';
 	import { Collection } from 'sveltefire';
 </script>
 
@@ -7,7 +8,7 @@
 		<ul>
 			{#each data as baby}
 				<li>
-					<a href={'../' + baby.id} data-sveltekit-reload>
+					<a href={'../' + baby.id}>
 						{baby.name}
 					</a>
 				</li>
@@ -15,7 +16,9 @@
 		</ul>
 	</nav>
 </Collection>
-<slot />
+{#key $page.url.pathname}
+	<slot />
+{/key}
 
 <style>
 	ul {
