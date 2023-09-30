@@ -2,7 +2,7 @@
 export const quantifiedFeedingTypes = ['pdf', 'breastMilk', 'breastfeed', 'temperature'] as const;
 export type QuantifiedFeedingType = (typeof quantifiedFeedingTypes)[number];
 
-export const booleanFeedingTypes = ['poo', 'iron', 'vitamin', 'hair'] as const;
+export const booleanFeedingTypes = ['pamper', 'poo', 'iron', 'vitamin', 'hair'] as const;
 export type BooleanFeedingType = (typeof booleanFeedingTypes)[number];
 
 export const feedingTypes = [...quantifiedFeedingTypes, ...booleanFeedingTypes, 'comment'] as const;

@@ -39,6 +39,7 @@
 			case 'iron':
 			case 'vitamin':
 			case 'hair':
+			case 'pamper':
 				addFeeding({ type: e.detail });
 				break;
 			case 'pdf':

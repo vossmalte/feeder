@@ -1,6 +1,7 @@
 import type { FeedingType } from './types';
 
 export const feedingCaptions: Record<FeedingType, string> = {
+	pamper: 'Gewickelt',
 	poo: 'Stuhl',
 	pdf: 'PDF',
 	breastfeed: 'Stillen',
@@ -12,6 +13,7 @@ export const feedingCaptions: Record<FeedingType, string> = {
 	temperature: 'Temperatur'
 };
 export const feedingUnits: Record<FeedingType, string> = {
+	pamper: '',
 	poo: '',
 	pdf: 'ml',
 	breastfeed: 'min',
