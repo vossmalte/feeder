@@ -64,6 +64,7 @@
 		background-color: mediumseagreen;
 		aspect-ratio: 1;
 		justify-content: center;
+		user-select: none;
 	}
 	label:has(:disabled) {
 		background: grey;
