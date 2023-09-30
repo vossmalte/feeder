@@ -32,7 +32,7 @@
 	});
 
 	// only on client: sync datetime to url
-	$: if (browser) goto('?datetime=' + datetime);
+	$: if (browser) goto('?datetime=' + datetime, { replaceState: true });
 
 	let feedingTypeForModal: QuantifiedFeedingType | 'comment' | undefined = undefined;
 
