@@ -29,6 +29,7 @@
 		<label>
 			{#if feedingType === 'comment'}
 				<input
+					autofocus
 					type="text"
 					bind:value={comment}
 					on:keypress={(e) => e.key === 'Enter' && submit()}
@@ -38,7 +39,7 @@
 				<input
 					autofocus
 					type="number"
-					inputmode="numeric"
+					inputmode="decimal"
 					bind:value={quantity}
 					on:keypress={(e) => e.key === 'Enter' && submit()}
 				/>
