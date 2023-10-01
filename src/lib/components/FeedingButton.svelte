@@ -4,6 +4,7 @@
 	export let datetime: string;
 
 	import { feedingEmojies } from '$lib/emojify';
+	import { feedingReminders } from '$lib/reminder';
 	import { feedingCaptions, feedingUnits } from '$lib/intl';
 	import { firestore } from '$lib/firebase';
 	import type { FeedingType } from '$lib/types';
@@ -43,16 +44,14 @@
 		) / 10.0;
 </script>
 
-<label>
+<label class:warning={hoursSinceLast > (feedingReminders[feedingType] ?? Number.POSITIVE_INFINITY)}>
 	<h3>{feedingCaptions[feedingType]}</h3>
 	<button on:click={click} disabled={!!actionOfThisRound}>{feedingEmojies[feedingType]}</button>
 	<span>
 		{#if !actionOfThisRound}
 			vor {hoursSinceLast > -1 ? hoursSinceLast : '♾️'}h:
 		{/if}
-		{renderedAction?.quantity ?? renderedAction?.comment ?? '✅'}{feedingUnits[
-			renderedAction?.type ?? 'poo'
-		]}
+		{renderedAction?.quantity ?? renderedAction?.comment ?? '✅'}{feedingUnits[feedingType]}
 	</span>
 </label>
 
@@ -67,7 +66,10 @@
 		user-select: none;
 	}
 	label:has(:disabled) {
-		background: grey;
+		background-color: grey;
+	}
+	.warning {
+		background-color: orange;
 	}
 	/* TODO: have a color to remind about urgency */
 	button {
