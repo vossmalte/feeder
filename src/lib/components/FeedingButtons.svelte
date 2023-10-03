@@ -66,7 +66,12 @@
 	}
 </script>
 
-<input type="datetime-local" bind:value={datetime} lang="sv-SE" />
+<input
+	type="datetime-local"
+	value={datetime}
+	on:focusout={(e) => (datetime = e.currentTarget?.value)}
+	lang="sv-SE"
+/>
 <button
 	on:click={() => {
 		datetime = new Date()
