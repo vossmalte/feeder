@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import { dev } from '$app/environment';
 import { getStorage } from 'firebase/storage';
 // Initialize Firebase
 const firebaseConfig = {
@@ -18,5 +19,7 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 export const firestore = getFirestore(app);
+const db = getFirestore();
+dev && connectFirestoreEmulator(db, '127.0.0.1', 8080);
 export const storage = getStorage(app);
 export const auth = getAuth(app);
