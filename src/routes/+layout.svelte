@@ -3,15 +3,25 @@
 	import { auth, firestore, storage } from '../lib/firebase';
 	import '../lib/css-reset.css';
 
-	// import { SignedIn, SignedOut } from 'sveltefire';
+	import { SignedIn, SignedOut } from 'sveltefire';
+	import { pwaInfo } from 'virtual:pwa-info';
+
+	$: webManifestLink = pwaInfo ? pwaInfo.webManifest.linkTag : '';
 </script>
 
+<svelte:head>
+	{@html webManifestLink}
+</svelte:head>
 <FirebaseApp {auth} {firestore} {storage}>
 	<nav>
-		<a href="/">🏠 Übersicht</a>
-		<!-- <a href="/login">Benutzer</a> -->
-		<!-- <SignedIn>y</SignedIn> -->
-		<!-- <SignedOut>n</SignedOut> -->
+		<span>
+			<a href="/">🏠 Übersicht</a>
+		</span>
+		<span>
+			<a href="/login">Benutzer</a>
+			<SignedIn>y</SignedIn>
+			<SignedOut>n</SignedOut>
+		</span>
 	</nav>
 	<main>
 		<slot />
@@ -23,5 +33,11 @@
 		font-family: sans-serif;
 		display: flex;
 		flex-direction: column;
+	}
+	nav {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
 	}
 </style>
