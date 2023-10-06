@@ -24,7 +24,12 @@
 		</span>
 	</nav>
 	<main>
-		<slot />
+		<SignedIn>
+			<slot />
+		</SignedIn>
+		<SignedOut>
+			<a href="/login">Anmelden</a> um die Anwendung zu verwenden.
+		</SignedOut>
 	</main>
 </FirebaseApp>
 
