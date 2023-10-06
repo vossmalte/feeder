@@ -5,6 +5,7 @@
 
 	import { SignedIn, SignedOut } from 'sveltefire';
 	import { pwaInfo } from 'virtual:pwa-info';
+	import Login from '$lib/components/Login.svelte';
 
 	$: webManifestLink = pwaInfo ? pwaInfo.webManifest.linkTag : '';
 </script>
@@ -28,7 +29,7 @@
 			<slot />
 		</SignedIn>
 		<SignedOut>
-			<a href="/login">Anmelden</a> um die Anwendung zu verwenden.
+			<Login {auth} />
 		</SignedOut>
 	</main>
 </FirebaseApp>
