@@ -52,9 +52,7 @@
 
 <style>
 	dialog {
-		position: fixed;
-		align-self: center;
-		bottom: 0vh;
+		margin: auto;
 		display: flex;
 		flex-direction: column;
 		text-align: center;
