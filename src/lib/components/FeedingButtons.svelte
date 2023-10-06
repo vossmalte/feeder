@@ -23,11 +23,15 @@
 
 	export let feedingsCollection: CollectionReference;
 
-	let datetime = $page.url.searchParams.get('datetime') ?? '';
+	let [date, time] = ($page.url.searchParams.get('datetime') ?? 'T').split('T');
+	$: datetime = `${date}T${time}`;
 	onMount(() => {
 		getDocs(query(feedingsCollection, orderBy('datetime', 'desc'), limit(1))).then(
 			// set to latest round if not provided yet
-			(feedings) => (datetime ||= feedings.docs[0].get('datetime'))
+			(feedings) => {
+				date ||= feedings.docs[0].get('datetime').split('T')[0];
+				time ||= feedings.docs[0].get('datetime').split('T')[1];
+			}
 		);
 	});
 
@@ -66,12 +70,8 @@
 	}
 </script>
 
-<input
-	type="datetime-local"
-	value={datetime}
-	on:focusout={(e) => (datetime = e.currentTarget?.value)}
-	lang="sv-SE"
-/>
+<input type="date" value={date} on:focusout={(e) => (date = e.currentTarget?.value)} lang="sv-SE" />
+<input type="time" value={time} on:focusout={(e) => (time = e.currentTarget?.value)} lang="sv-SE" />
 <button
 	on:click={() => {
 		datetime = new Date()
@@ -91,11 +91,20 @@
 {/if}
 
 <style>
+	input,
+	button {
+		width: fit-content;
+		margin: 4px auto;
+	}
+	input[type='time'] {
+		font-size: 200%;
+	}
 	ul {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		gap: 4px;
 		padding: 0;
+		margin-top: 8px;
 	}
 	li {
 		list-style-type: none;
