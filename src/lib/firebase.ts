@@ -19,7 +19,6 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 export const firestore = getFirestore(app);
-const db = getFirestore();
-dev && connectFirestoreEmulator(db, '127.0.0.1', 8080);
+dev && connectFirestoreEmulator(firestore, '127.0.0.1', 8080);
 export const storage = getStorage(app);
 export const auth = getAuth(app);
