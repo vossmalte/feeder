@@ -4,6 +4,7 @@
 	import { feedingCaptions, feedingUnits } from '$lib/intl';
 	import {
 		deleteDoc,
+		limit,
 		orderBy,
 		query,
 		type CollectionReference,
@@ -16,7 +17,11 @@
 	export let feedingsCollection: CollectionReference;
 	export let numberOfRounds = Number.POSITIVE_INFINITY;
 
-	const q = query(feedingsCollection, orderBy('datetime', 'desc'));
+	const q = query(
+		feedingsCollection,
+		orderBy('datetime', 'desc'),
+		limit(numberOfRounds * feedingTypes.length)
+	);
 	const feedings = collectionStore(firestore, q);
 
 	//derived<Readable<DocumentData[]>, Map<string, DocumentData[]>>
@@ -34,6 +39,7 @@
 
 	import { crossfade } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
+	import { feedingTypes } from '$lib/types';
 	export const [send, receive] = crossfade({
 		duration: (d) => Math.sqrt(d * 200),
 

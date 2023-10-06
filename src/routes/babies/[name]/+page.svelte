@@ -20,7 +20,7 @@
 <FeedingButtons {feedingsCollection} />
 
 <h2>Letzte Aktionen</h2>
-<FeedingHistory {feedingsCollection} />
+<FeedingHistory {feedingsCollection} numberOfRounds={10} />
 
 <style>
 	h1 {
