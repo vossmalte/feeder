@@ -102,6 +102,7 @@
 	ul {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
+		margin: 4px;
 		gap: 4px;
 		padding: 0;
 		margin-top: 8px;
