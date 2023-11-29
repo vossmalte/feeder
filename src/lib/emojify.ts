@@ -4,6 +4,7 @@ export const feedingEmojies: Record<FeedingType, string> = {
 	pamper: '🧻',
 	poo: '💩',
 	pdf: '🥣',
+	bath: '🛁',
 	breastfeed: '🤱',
 	breastMilk: '🥛',
 	hair: '🪮',

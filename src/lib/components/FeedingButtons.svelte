@@ -52,6 +52,7 @@
 			case 'poo':
 			case 'iron':
 			case 'vitamin':
+			case 'bath':
 			case 'hair':
 			case 'pamper':
 				addFeeding({ type: e.detail });
