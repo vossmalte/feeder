@@ -44,7 +44,8 @@
 		) / 10.0;
 </script>
 
-<label class:warning={hoursSinceLast > (feedingReminders[feedingType] ?? Number.POSITIVE_INFINITY)}>
+<!-- no more annoying warnings -->
+<label class:warning={false}>
 	<h3>{feedingCaptions[feedingType]}</h3>
 	<button on:click={click} disabled={!!actionOfThisRound}>{feedingEmojies[feedingType]}</button>
 	<span>
